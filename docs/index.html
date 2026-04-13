@@ -436,11 +436,12 @@
     .bento {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: auto auto auto;
+      grid-template-rows: auto auto auto auto;
       grid-template-areas:
-        "triage triage notes"
-        "calendar sops routing"
-        "now     now   now";
+        "triage  triage  notes"
+        "calendar sops   routing"
+        "engines engines metrics"
+        "now      now    now";
       gap: 16px;
     }
 
@@ -474,7 +475,73 @@
     .card-calendar { grid-area: calendar; }
     .card-sops     { grid-area: sops; }
     .card-routing  { grid-area: routing; }
+    .card-engines  { grid-area: engines; }
+    .card-metrics  { grid-area: metrics; }
     .card-now      { grid-area: now; }
+
+    .card-engines {
+      background: linear-gradient(135deg, rgba(245,158,11,0.07) 0%, rgba(124,58,237,0.1) 100%);
+      border-color: rgba(245,158,11,0.25);
+    }
+    .card-engines:hover {
+      border-color: rgba(245,158,11,0.5);
+      box-shadow: 0 0 30px rgba(245,158,11,0.12);
+    }
+
+    .provider-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .provider-pill {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-align: center;
+      letter-spacing: 0.03em;
+    }
+
+    .provider-pill.active {
+      background: rgba(245,158,11,0.1);
+      border-color: rgba(245,158,11,0.35);
+      color: #fbbf24;
+    }
+
+    .provider-pill.teal {
+      background: rgba(6,182,212,0.1);
+      border-color: rgba(6,182,212,0.3);
+      color: var(--accent-2);
+    }
+
+    .provider-pill.violet {
+      background: rgba(124,58,237,0.1);
+      border-color: rgba(124,58,237,0.3);
+      color: #a78bfa;
+    }
+
+    .card-metrics::before {
+      background: radial-gradient(ellipse at bottom right, rgba(6,182,212,0.08) 0%, transparent 65%);
+    }
+
+    .metric-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.78rem;
+    }
+
+    .metric-row:last-child { border-bottom: none; }
+
+    .metric-label { color: var(--text-muted); }
+    .metric-val   { font-family: 'Space Grotesk', sans-serif; font-weight: 600; color: var(--accent-2); }
 
     .card-now {
       background: linear-gradient(135deg, rgba(6,182,212,0.1) 0%, rgba(124,58,237,0.12) 100%);
@@ -782,13 +849,16 @@
       .bento {
         grid-template-columns: 1fr 1fr;
         grid-template-areas:
-          "triage triage"
-          "notes  calendar"
-          "sops   routing"
-          "now    now";
+          "triage   triage"
+          "notes    calendar"
+          "sops     routing"
+          "engines  engines"
+          "metrics  metrics"
+          "now      now";
       }
 
       .card-now { grid-template-columns: 1fr; }
+      .provider-grid { grid-template-columns: repeat(4, 1fr); }
 
       .steps-grid {
         grid-template-columns: 1fr;
@@ -822,8 +892,11 @@
           "calendar"
           "sops"
           "routing"
+          "engines"
+          "metrics"
           "now";
       }
+      .provider-grid { grid-template-columns: repeat(2, 1fr); }
 
       .section { padding: 64px 0; }
     }
@@ -851,7 +924,7 @@
       <span class="pill pill-live">⚡ Voicemail triage — available now</span>
     </div>
     <h1>Your AI Technician.<br><span class="glow-text">On Call 24/7.</span></h1>
-    <p class="hero-sub">ComFlow turns every missed call into a structured work item — and is becoming the AI co-worker that resolves them. Powered by Claude. Driven by MCP.</p>
+    <p class="hero-sub">ComFlow turns every missed call into a structured work item — and is becoming the AI co-worker that resolves them. Bring your own LLM, STT, and TTS. Benchmark everything. Own your stack.</p>
     <div class="hero-actions">
       <a href="https://github.com/josephspillers/ComFlow" target="_blank" rel="noopener" class="btn btn-primary">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
@@ -883,7 +956,7 @@
       <div class="mockup-summary">
         Printer on 3rd floor offline since 9am, blocking production reports. Needs immediate triage — escalate to hardware queue.
       </div>
-      <div style="font-size:0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 6px;">Extracted by Claude · 2s ago</div>
+      <div style="font-size:0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 6px;">Extracted by claude-sonnet-4-6 · 2s · 98ms</div>
       <div class="mockup-action-row">
         <div class="mockup-btn">Add Note</div>
         <div class="mockup-btn accent">Assign Queue →</div>
@@ -904,8 +977,8 @@
     <span class="ticker-item"><span class="ticker-dot"></span>AI Escalation Logic</span>
     <span class="ticker-item"><span class="ticker-dot"></span>Real-Time Transcription</span>
     <span class="ticker-item"><span class="ticker-dot"></span>Autonomous Resolution</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>Multi-Queue Routing</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>Claude-Powered Extraction</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Pluggable LLM · STT · TTS</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Engine Benchmarking &amp; Metricing</span>
     <span class="ticker-item"><span class="ticker-dot"></span>MCP Calendar Integration</span>
     <span class="ticker-item"><span class="ticker-dot"></span>SOP Knowledge Base</span>
     <span class="ticker-item"><span class="ticker-dot"></span>Auto-Triage Routing</span>
@@ -914,8 +987,8 @@
     <span class="ticker-item"><span class="ticker-dot"></span>AI Escalation Logic</span>
     <span class="ticker-item"><span class="ticker-dot"></span>Real-Time Transcription</span>
     <span class="ticker-item"><span class="ticker-dot"></span>Autonomous Resolution</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>Multi-Queue Routing</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>Claude-Powered Extraction</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Pluggable LLM · STT · TTS</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Engine Benchmarking &amp; Metricing</span>
   </div>
 </div>
 
@@ -934,7 +1007,7 @@
           AI-Powered Triage
           <span class="pill pill-live" style="font-size:0.65rem; padding: 3px 9px;">Live</span>
         </div>
-        <div class="bento-desc">Claude reads every transcript and extracts caller name, company, callback number, intent, urgency, and a plain-English summary. No forms. No manual data entry. Structured work items, automatically.</div>
+        <div class="bento-desc">Swap in any LLM — Claude, GPT-4o, Gemini, a local Ollama model, whatever — and it extracts caller name, company, callback number, intent, urgency, and a plain-English summary. No forms. No lock-in. Structured work items, automatically.</div>
       </div>
 
       <!-- Notes -->
@@ -974,13 +1047,49 @@
         <div class="bento-desc">Intent + urgency + workload = the right tech, right now. Automated assignment rules keep the inbox from becoming a pile.</div>
       </div>
 
+      <!-- Engine Interoperability — 2 wide -->
+      <div class="bento-card card-engines">
+        <span class="bento-icon">🔌</span>
+        <div class="bento-title">
+          Engine Interoperability
+          <span class="pill pill-live" style="font-size:0.65rem; padding: 3px 9px;">Core Design</span>
+        </div>
+        <div class="bento-desc">ComFlow is built around provider interfaces, not hard dependencies. Swap LLM, STT, and TTS engines at config time. Run them head-to-head. Your infra, your vendors, your call.</div>
+        <div class="provider-grid">
+          <div class="provider-pill active">LLM · Claude</div>
+          <div class="provider-pill violet">LLM · GPT-4o</div>
+          <div class="provider-pill violet">LLM · Gemini</div>
+          <div class="provider-pill violet">LLM · Local</div>
+          <div class="provider-pill teal">STT · Whisper</div>
+          <div class="provider-pill teal">STT · Deepgram</div>
+          <div class="provider-pill" style="color:#a3e635;background:rgba(163,230,53,0.08);border-color:rgba(163,230,53,0.25);">TTS · ElevenLabs</div>
+          <div class="provider-pill" style="color:#a3e635;background:rgba(163,230,53,0.08);border-color:rgba(163,230,53,0.25);">TTS · Kokoro</div>
+        </div>
+      </div>
+
+      <!-- Metricing -->
+      <div class="bento-card card-metrics">
+        <span class="bento-icon">📊</span>
+        <div class="bento-title">
+          Provider Metricing
+          <span class="pill pill-soon" style="font-size:0.65rem; padding: 3px 9px;">Soon</span>
+        </div>
+        <div class="bento-desc">Every extraction run is timed and scored. Compare engines on latency, accuracy, and cost — per call, per queue, over time.</div>
+        <div style="margin-top:14px;">
+          <div class="metric-row"><span class="metric-label">claude-sonnet-4-6</span><span class="metric-val">98ms</span></div>
+          <div class="metric-row"><span class="metric-label">gpt-4o-mini</span><span class="metric-val">142ms</span></div>
+          <div class="metric-row"><span class="metric-label">gemini-flash</span><span class="metric-val">211ms</span></div>
+          <div class="metric-row"><span class="metric-label">llama3-local</span><span class="metric-val">380ms</span></div>
+        </div>
+      </div>
+
       <!-- Voicemail NOW -->
       <div class="bento-card card-now">
         <div>
           <span class="pill pill-live" style="margin-bottom: 14px; display: inline-flex;">⚡ Available Today</span>
           <div class="now-headline">Start with voicemail.<br><span class="glow-text">Grow into AI.</span></div>
         </div>
-        <div class="now-desc">The foundation is live: capture inbound calls, transcribe recordings, extract structured metadata with Claude, and manage everything from a clean review UI. The AI secretary is being built on top of this.</div>
+        <div class="now-desc">The foundation is live: capture inbound calls, transcribe with your chosen STT engine, extract structured metadata with your chosen LLM, and manage everything from a clean review UI. The AI secretary — engine-agnostic by design — is built on top of this.</div>
         <div>
           <a href="https://github.com/josephspillers/ComFlow" target="_blank" rel="noopener" class="btn btn-primary" style="white-space:nowrap;">Get Started →</a>
         </div>
@@ -1006,7 +1115,7 @@
       <div class="step">
         <div class="step-number">2</div>
         <div class="step-title">AI extracts context</div>
-        <div class="step-desc">The recording is transcribed, then Claude reads the transcript and pulls out caller name, company, callback number, intent category, urgency level, and a plain summary.</div>
+        <div class="step-desc">The recording is transcribed by your configured STT engine. Your chosen LLM then pulls out caller name, company, callback number, intent category, urgency level, and a plain summary — all measured and logged.</div>
       </div>
       <div class="step-connector">→</div>
       <div class="step">
@@ -1041,7 +1150,7 @@
           <span class="roadmap-icon">🧠</span>
           <div class="roadmap-text">
             AI metadata extraction
-            <small>Claude-powered structured output from transcripts</small>
+            <small>Pluggable LLM extraction — Claude, GPT-4o, Gemini, local models</small>
           </div>
           <span class="status-badge status-done">Done</span>
         </li>
@@ -1060,6 +1169,22 @@
             <small>Twilio / Telnyx integration replacing the fake provider</small>
           </div>
           <span class="status-badge status-building">Building</span>
+        </li>
+        <li class="roadmap-item">
+          <span class="roadmap-icon">📊</span>
+          <div class="roadmap-text">
+            Engine benchmarking dashboard
+            <small>Per-call latency, accuracy, and cost metrics across all provider slots</small>
+          </div>
+          <span class="status-badge status-building">Building</span>
+        </li>
+        <li class="roadmap-item">
+          <span class="roadmap-icon">🔌</span>
+          <div class="roadmap-text">
+            Real STT / TTS adapters
+            <small>Whisper, Deepgram, ElevenLabs, Kokoro — swappable at config time</small>
+          </div>
+          <span class="status-badge status-planned">Planned</span>
         </li>
         <li class="roadmap-item">
           <span class="roadmap-icon">📅</span>
@@ -1123,7 +1248,7 @@
     </div>
     <div class="claude-badge">
       <div class="claude-dot"></div>
-      Built with Claude
+      Engine-agnostic AI infrastructure
     </div>
   </div>
 </footer>
