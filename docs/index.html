@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ComFlow — AI Technician for Your Helpdesk</title>
+  <meta name="description" content="ComFlow turns every missed call into a structured work item and is becoming the AI co-worker that resolves them. Voicemail triage available now." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & Tokens ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #0a0a0f;
+      --surface:     #13131a;
+      --surface-2:   #1c1c28;
+      --surface-3:   #232336;
+      --accent:      #7c3aed;
+      --accent-2:    #06b6d4;
+      --accent-3:    #f59e0b;
+      --text:        #f1f0ff;
+      --text-muted:  #8884aa;
+      --border:      #2a2840;
+      --border-glow: rgba(124, 58, 237, 0.4);
+      --glow-teal:   rgba(6, 182, 212, 0.35);
+      --radius:      14px;
+      --radius-sm:   8px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      line-height: 1.2;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Utilities ──────────────────────────────────────────── */
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .pill-live {
+      background: rgba(6, 182, 212, 0.12);
+      color: var(--accent-2);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+    }
+
+    .pill-soon {
+      background: rgba(124, 58, 237, 0.12);
+      color: #a78bfa;
+      border: 1px solid rgba(124, 58, 237, 0.3);
+    }
+
+    .glow-text {
+      background: linear-gradient(135deg, #a78bfa 0%, var(--accent-2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: var(--radius-sm);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); opacity: 0.9; }
+    .btn:active { transform: translateY(0); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #5b21b6);
+      color: #fff;
+      box-shadow: 0 0 24px rgba(124, 58, 237, 0.45);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 0 36px rgba(124, 58, 237, 0.65);
+    }
+
+    .btn-ghost {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    /* ── Noise overlay ──────────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Nav ────────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 16px 0;
+      background: rgba(10, 10, 15, 0.7);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(42, 40, 64, 0.6);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-logo span { color: var(--accent-2); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── Hero ───────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas: "copy mockup";
+      align-items: center;
+      padding-top: 80px;
+      gap: 48px;
+      position: relative;
+    }
+
+    /* radial glow behind hero */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 20%;
+      left: -10%;
+      width: 60%;
+      height: 60%;
+      background: radial-gradient(ellipse at center, rgba(124, 58, 237, 0.14) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-copy {
+      grid-area: copy;
+      z-index: 1;
+    }
+
+    .hero-eyebrow {
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.6rem, 5vw, 4rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+      line-height: 1.1;
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      color: var(--text-muted);
+      max-width: 480px;
+      margin-bottom: 36px;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* ── Call Card Mockup ───────────────────────────────────── */
+    .hero-mockup {
+      grid-area: mockup;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+    }
+
+    .mockup-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 0 60px rgba(124, 58, 237, 0.18), 0 32px 80px rgba(0,0,0,0.5);
+      animation: float 5s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-10px); }
+    }
+
+    .mockup-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .mockup-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: flex;
+      align-items: center;
+      justify-content: font-size;
+      font-size: 1rem;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mockup-caller-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .mockup-company {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .mockup-badge-row {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .mockup-badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-support  { background: rgba(124,58,237,0.2); color: #a78bfa; }
+    .badge-high     { background: rgba(239,68,68,0.18); color: #f87171; }
+    .badge-new      { background: rgba(6,182,212,0.15); color: var(--accent-2); }
+
+    .mockup-summary {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin-bottom: 16px;
+    }
+
+    .mockup-ai-label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .ai-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-2);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(0.7); }
+    }
+
+    .mockup-action-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .mockup-btn {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+    }
+
+    .mockup-btn.accent {
+      background: rgba(124,58,237,0.2);
+      border-color: rgba(124,58,237,0.4);
+      color: #c4b5fd;
+    }
+
+    /* ── Ticker ─────────────────────────────────────────────── */
+    .ticker-wrap {
+      overflow: hidden;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 0;
+    }
+
+    .ticker-track {
+      display: flex;
+      gap: 0;
+      animation: ticker 28s linear infinite;
+      width: max-content;
+    }
+
+    .ticker-track:hover { animation-play-state: paused; }
+
+    @keyframes ticker {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .ticker-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 32px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .ticker-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    /* ── Section Labels ─────────────────────────────────────── */
+    .section {
+      padding: 96px 0;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      margin-bottom: 16px;
+    }
+
+    .section-sub {
+      color: var(--text-muted);
+      max-width: 540px;
+      font-size: 1.02rem;
+      line-height: 1.7;
+      margin-bottom: 52px;
+    }
+
+    /* ── Bento Grid ─────────────────────────────────────────── */
+    .bento {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto auto;
+      grid-template-areas:
+        "triage triage notes"
+        "calendar sops routing"
+        "now     now   now";
+      gap: 16px;
+    }
+
+    .bento-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s;
+    }
+
+    .bento-card:hover {
+      border-color: var(--border-glow);
+      box-shadow: 0 0 30px rgba(124, 58, 237, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .bento-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at top left, rgba(124,58,237,0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    /* named areas */
+    .card-triage   { grid-area: triage; }
+    .card-notes    { grid-area: notes; }
+    .card-calendar { grid-area: calendar; }
+    .card-sops     { grid-area: sops; }
+    .card-routing  { grid-area: routing; }
+    .card-now      { grid-area: now; }
+
+    .card-now {
+      background: linear-gradient(135deg, rgba(6,182,212,0.1) 0%, rgba(124,58,237,0.12) 100%);
+      border-color: rgba(6,182,212,0.35);
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .card-now:hover {
+      border-color: rgba(6,182,212,0.6);
+      box-shadow: 0 0 40px rgba(6,182,212,0.2);
+    }
+
+    .card-now::before {
+      background: none;
+    }
+
+    .bento-icon {
+      font-size: 1.8rem;
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .bento-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .bento-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .now-headline {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    .now-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    /* ── How It Works ───────────────────────────────────────── */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: 1fr 48px 1fr 48px 1fr;
+      align-items: start;
+      gap: 0;
+    }
+
+    .step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      position: relative;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+
+    .step:hover {
+      border-color: var(--border-glow);
+      box-shadow: 0 0 28px rgba(124,58,237,0.15);
+    }
+
+    .step-number {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 16px;
+    }
+
+    .step-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+
+    .step-desc {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .step-connector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 44px;
+      color: var(--border);
+      font-size: 1.4rem;
+    }
+
+    /* ── Roadmap ────────────────────────────────────────────── */
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    .roadmap-label-block {
+      position: sticky;
+      top: 100px;
+    }
+
+    .roadmap-big {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+    }
+
+    .roadmap-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .roadmap-item {
+      display: grid;
+      grid-template-columns: 28px 1fr auto;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 20px;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .roadmap-item:hover {
+      background: var(--surface-2);
+      border-color: var(--border);
+    }
+
+    .roadmap-icon { font-size: 1.1rem; }
+
+    .roadmap-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      font-size: 1rem;
+    }
+
+    .roadmap-text small {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 400;
+      margin-top: 2px;
+    }
+
+    .status-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    .status-done     { background: rgba(16,185,129,0.15); color: #34d399; }
+    .status-building { background: rgba(245,158,11,0.15); color: #fbbf24; }
+    .status-planned  { background: rgba(124,58,237,0.15); color: #a78bfa; }
+
+    /* ── Voicemail Callout ──────────────────────────────────── */
+    .callout-section {
+      padding: 0 0 96px;
+    }
+
+    .callout-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 48px 52px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 32px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .callout-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(ellipse at center, rgba(6,182,212,0.08) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .callout-phone {
+      font-size: 3rem;
+    }
+
+    .callout-text h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .callout-text p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      max-width: 580px;
+    }
+
+    /* ── Footer ─────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .footer-logo span { color: var(--accent-2); }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      transition: color 0.15s;
+    }
+
+    .footer-links a:hover { color: var(--text); }
+
+    .claude-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 5px 12px;
+    }
+
+    .claude-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    }
+
+    /* ── Responsive ─────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        grid-template-areas: "copy" "mockup";
+        text-align: center;
+        padding-top: 100px;
+        padding-bottom: 60px;
+        min-height: auto;
+        gap: 40px;
+      }
+
+      .hero-sub { margin-left: auto; margin-right: auto; }
+      .hero-actions { justify-content: center; }
+      .hero-mockup { display: none; }
+
+      .bento {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+          "triage triage"
+          "notes  calendar"
+          "sops   routing"
+          "now    now";
+      }
+
+      .card-now { grid-template-columns: 1fr; }
+
+      .steps-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .step-connector { display: none; }
+
+      .roadmap-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .roadmap-label-block { position: static; }
+
+      .callout-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 36px 28px;
+      }
+
+      .callout-phone { display: none; }
+    }
+
+    @media (max-width: 560px) {
+      .bento {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "triage"
+          "notes"
+          "calendar"
+          "sops"
+          "routing"
+          "now";
+      }
+
+      .section { padding: 64px 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Nav ─────────────────────────────────────────────────── -->
+<nav>
+  <div class="container nav-inner">
+    <div class="nav-logo">Com<span>Flow</span></div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="https://github.com/josephspillers/ComFlow" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── Hero ────────────────────────────────────────────────── -->
+<section class="section hero container">
+  <div class="hero-copy">
+    <div class="hero-eyebrow">
+      <span class="pill pill-live">⚡ Voicemail triage — available now</span>
+    </div>
+    <h1>Your AI Technician.<br><span class="glow-text">On Call 24/7.</span></h1>
+    <p class="hero-sub">ComFlow turns every missed call into a structured work item — and is becoming the AI co-worker that resolves them. Powered by Claude. Driven by MCP.</p>
+    <div class="hero-actions">
+      <a href="https://github.com/josephspillers/ComFlow" target="_blank" rel="noopener" class="btn btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        View on GitHub
+      </a>
+      <a href="#how-it-works" class="btn btn-ghost">See How It Works ↓</a>
+    </div>
+  </div>
+
+  <!-- Animated call card mockup -->
+  <div class="hero-mockup">
+    <div class="mockup-card">
+      <div class="mockup-header">
+        <div class="mockup-avatar">📞</div>
+        <div>
+          <div class="mockup-caller-name">Sarah Mitchell</div>
+          <div class="mockup-company">Apex Manufacturing · +1 (555) 204-7823</div>
+        </div>
+      </div>
+      <div class="mockup-badge-row">
+        <span class="mockup-badge badge-support">Support</span>
+        <span class="mockup-badge badge-high">High Urgency</span>
+        <span class="mockup-badge badge-new">New</span>
+      </div>
+      <div class="mockup-ai-label">
+        <div class="ai-dot"></div>
+        AI Summary
+      </div>
+      <div class="mockup-summary">
+        Printer on 3rd floor offline since 9am, blocking production reports. Needs immediate triage — escalate to hardware queue.
+      </div>
+      <div style="font-size:0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 6px;">Extracted by Claude · 2s ago</div>
+      <div class="mockup-action-row">
+        <div class="mockup-btn">Add Note</div>
+        <div class="mockup-btn accent">Assign Queue →</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Ticker ───────────────────────────────────────────────── -->
+<div class="ticker-wrap">
+  <div class="ticker-track" aria-hidden="true">
+    <!-- duplicated for seamless loop -->
+    <span class="ticker-item"><span class="ticker-dot"></span>MCP Calendar Integration</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>SOP Knowledge Base</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Auto-Triage Routing</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Helpdesk Workflow Automation</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Voice-to-Ticket</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>AI Escalation Logic</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Real-Time Transcription</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Autonomous Resolution</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Multi-Queue Routing</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Claude-Powered Extraction</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>MCP Calendar Integration</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>SOP Knowledge Base</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Auto-Triage Routing</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Helpdesk Workflow Automation</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Voice-to-Ticket</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>AI Escalation Logic</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Real-Time Transcription</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Autonomous Resolution</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Multi-Queue Routing</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Claude-Powered Extraction</span>
+  </div>
+</div>
+
+<!-- ── Bento Features ───────────────────────────────────────── -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="section-label">Capabilities</div>
+    <h2 class="section-title">Built for how helpdesks <span class="glow-text">actually work</span></h2>
+    <p class="section-sub">Every feature is designed around the real rhythm of a support team — fast triage, clear context, and zero dropped balls.</p>
+
+    <div class="bento">
+      <!-- AI Triage — 2 wide -->
+      <div class="bento-card card-triage">
+        <span class="bento-icon">🧠</span>
+        <div class="bento-title">
+          AI-Powered Triage
+          <span class="pill pill-live" style="font-size:0.65rem; padding: 3px 9px;">Live</span>
+        </div>
+        <div class="bento-desc">Claude reads every transcript and extracts caller name, company, callback number, intent, urgency, and a plain-English summary. No forms. No manual data entry. Structured work items, automatically.</div>
+      </div>
+
+      <!-- Notes -->
+      <div class="bento-card card-notes">
+        <span class="bento-icon">📝</span>
+        <div class="bento-title">Internal Notes</div>
+        <div class="bento-desc">Add team context to any call. Notes stay attached to the record so the next tech has full history before picking up the phone.</div>
+      </div>
+
+      <!-- Calendar Integration -->
+      <div class="bento-card card-calendar">
+        <span class="bento-icon">📅</span>
+        <div class="bento-title">
+          MCP Calendar Integration
+          <span class="pill pill-soon" style="font-size:0.65rem; padding: 3px 9px;">Soon</span>
+        </div>
+        <div class="bento-desc">ComFlow will connect to your calendar via MCP — scheduling callbacks, booking onsite visits, and sending confirmations without a human touching a calendar app.</div>
+      </div>
+
+      <!-- SOPs -->
+      <div class="bento-card card-sops">
+        <span class="bento-icon">📋</span>
+        <div class="bento-title">
+          SOP Knowledge Base
+          <span class="pill pill-soon" style="font-size:0.65rem; padding: 3px 9px;">Soon</span>
+        </div>
+        <div class="bento-desc">Link your standard operating procedures. The AI will match incoming issues to known workflows and pre-populate resolution steps for the technician.</div>
+      </div>
+
+      <!-- Routing -->
+      <div class="bento-card card-routing">
+        <span class="bento-icon">🔀</span>
+        <div class="bento-title">
+          Smart Queue Routing
+          <span class="pill pill-soon" style="font-size:0.65rem; padding: 3px 9px;">Soon</span>
+        </div>
+        <div class="bento-desc">Intent + urgency + workload = the right tech, right now. Automated assignment rules keep the inbox from becoming a pile.</div>
+      </div>
+
+      <!-- Voicemail NOW -->
+      <div class="bento-card card-now">
+        <div>
+          <span class="pill pill-live" style="margin-bottom: 14px; display: inline-flex;">⚡ Available Today</span>
+          <div class="now-headline">Start with voicemail.<br><span class="glow-text">Grow into AI.</span></div>
+        </div>
+        <div class="now-desc">The foundation is live: capture inbound calls, transcribe recordings, extract structured metadata with Claude, and manage everything from a clean review UI. The AI secretary is being built on top of this.</div>
+        <div>
+          <a href="https://github.com/josephspillers/ComFlow" target="_blank" rel="noopener" class="btn btn-primary" style="white-space:nowrap;">Get Started →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── How It Works ─────────────────────────────────────────── -->
+<section class="section" id="how-it-works" style="padding-top: 0;">
+  <div class="container">
+    <div class="section-label">Process</div>
+    <h2 class="section-title">Three steps. Zero dropped calls.</h2>
+    <p class="section-sub">ComFlow sits between your phone system and your team, making sure every inbound call becomes an actionable work item.</p>
+
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-title">Call comes in</div>
+        <div class="step-desc">Your telephony system fires a webhook. ComFlow captures the call record, stores the recording reference, and queues it for processing. Nothing is missed.</div>
+      </div>
+      <div class="step-connector">→</div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-title">AI extracts context</div>
+        <div class="step-desc">The recording is transcribed, then Claude reads the transcript and pulls out caller name, company, callback number, intent category, urgency level, and a plain summary.</div>
+      </div>
+      <div class="step-connector">→</div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-title">Team reviews &amp; resolves</div>
+        <div class="step-desc">The call lands in the inbox with full context. Technicians review, confirm or correct the AI output, add notes, assign to a queue, and mark resolved — all from one screen.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Roadmap ──────────────────────────────────────────────── -->
+<section class="section" id="roadmap">
+  <div class="container">
+    <div class="roadmap-grid">
+      <div class="roadmap-label-block">
+        <div class="section-label">Roadmap</div>
+        <div class="roadmap-big"><span class="glow-text">Where we're</span><br>going.</div>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 16px; line-height: 1.7;">ComFlow starts as a smarter voicemail inbox and grows into a fully autonomous helpdesk co-worker. Each layer builds on the last.</p>
+      </div>
+
+      <ul class="roadmap-list">
+        <li class="roadmap-item">
+          <span class="roadmap-icon">📞</span>
+          <div class="roadmap-text">
+            Voicemail capture + transcription
+            <small>Inbound webhooks, recording storage, STT pipeline</small>
+          </div>
+          <span class="status-badge status-done">Done</span>
+        </li>
+        <li class="roadmap-item">
+          <span class="roadmap-icon">🧠</span>
+          <div class="roadmap-text">
+            AI metadata extraction
+            <small>Claude-powered structured output from transcripts</small>
+          </div>
+          <span class="status-badge status-done">Done</span>
+        </li>
+        <li class="roadmap-item">
+          <span class="roadmap-icon">🖥️</span>
+          <div class="roadmap-text">
+            Human-review inbox UI
+            <small>Review, edit, assign, and resolve calls from a web app</small>
+          </div>
+          <span class="status-badge status-done">Done</span>
+        </li>
+        <li class="roadmap-item">
+          <span class="roadmap-icon">📡</span>
+          <div class="roadmap-text">
+            Real telephony adapter
+            <small>Twilio / Telnyx integration replacing the fake provider</small>
+          </div>
+          <span class="status-badge status-building">Building</span>
+        </li>
+        <li class="roadmap-item">
+          <span class="roadmap-icon">📅</span>
+          <div class="roadmap-text">
+            MCP calendar integration
+            <small>AI schedules callbacks and visits via Model Context Protocol</small>
+          </div>
+          <span class="status-badge status-planned">Planned</span>
+        </li>
+        <li class="roadmap-item">
+          <span class="roadmap-icon">📋</span>
+          <div class="roadmap-text">
+            SOP knowledge base
+            <small>Match issues to known workflows, pre-populate resolution steps</small>
+          </div>
+          <span class="status-badge status-planned">Planned</span>
+        </li>
+        <li class="roadmap-item">
+          <span class="roadmap-icon">🔀</span>
+          <div class="roadmap-text">
+            Automated queue routing
+            <small>Intent + urgency + availability → right tech, right now</small>
+          </div>
+          <span class="status-badge status-planned">Planned</span>
+        </li>
+        <li class="roadmap-item">
+          <span class="roadmap-icon">🤖</span>
+          <div class="roadmap-text">
+            Autonomous helpdesk resolution
+            <small>AI executes known SOPs end-to-end for common issue types</small>
+          </div>
+          <span class="status-badge status-planned">Planned</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── Voicemail Only Callout ───────────────────────────────── -->
+<section class="callout-section">
+  <div class="container">
+    <div class="callout-card">
+      <div class="callout-phone">📬</div>
+      <div class="callout-text">
+        <h3>Voicemail only — <span class="glow-text">for now.</span></h3>
+        <p>Right now, ComFlow is a really smart voicemail system. It captures your calls, transcribes them, and extracts what matters — so nothing falls through the cracks. The AI secretary that books your appointments, walks SOPs, and resolves tickets? It's coming. This is its foundation. Get in early.</p>
+      </div>
+      <a href="https://github.com/josephspillers/ComFlow" target="_blank" rel="noopener" class="btn btn-primary" style="white-space:nowrap; align-self: center;">Star on GitHub →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ───────────────────────────────────────────────── -->
+<footer>
+  <div class="container footer-inner">
+    <div class="footer-logo">Com<span>Flow</span></div>
+    <div class="footer-links">
+      <a href="https://github.com/josephspillers/ComFlow" target="_blank" rel="noopener">GitHub</a>
+      <a href="#features">Features</a>
+      <a href="#roadmap">Roadmap</a>
+    </div>
+    <div class="claude-badge">
+      <div class="claude-dot"></div>
+      Built with Claude
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
