@@ -14,7 +14,7 @@ on:
 env:
   REGISTRY: ghcr.io
   # ghcr requires a lowercase path; hardcoded to avoid repo-name casing issues.
-  IMAGE: ghcr.io/spilloid/comflow
+  IMAGE: ghcr.io/spillers-technology/comflow
 
 jobs:
   build-push:

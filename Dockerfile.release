@@ -15,7 +15,7 @@ RUN npm run build
 
 FROM node:20-bookworm-slim
 # Links the GHCR package to the repo so Actions (GITHUB_TOKEN) can publish it.
-LABEL org.opencontainers.image.source="https://github.com/spilloid/ComFlow"
+LABEL org.opencontainers.image.source="https://github.com/Spillers-Technology/ComFlow"
 LABEL org.opencontainers.image.description="ComFlow — voicemail regulator"
 LABEL org.opencontainers.image.licenses="MIT"
 WORKDIR /app
