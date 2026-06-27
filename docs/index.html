@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ComFlow — AI Technician for Your Helpdesk</title>
-  <meta name="description" content="ComFlow turns every missed call into a structured work item and is becoming the AI co-worker that resolves them. Voicemail triage available now." />
+  <title>ComFlow — The Voicemail Regulator</title>
+  <meta name="description" content="ComFlow receives voicemails over SIP, transcribes and structures them, gives your team a golden review inbox, and syncs the ones that matter into AnchorDesk. Self-hosted. Bring your own LLM, STT, and TTS." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -912,7 +912,8 @@
       <a href="#features">Features</a>
       <a href="#how-it-works">How It Works</a>
       <a href="#roadmap">Roadmap</a>
-      <a href="https://github.com/josephspillers/ComFlow" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="#access">Get Access</a>
+      <a href="https://github.com/spilloid/ComFlow" target="_blank" rel="noopener">GitHub ↗</a>
     </div>
   </div>
 </nav>
@@ -921,24 +922,24 @@
 <section class="section hero container">
   <div class="hero-copy">
     <div class="hero-eyebrow">
-      <span class="pill pill-live">⚡ Voicemail triage — available now</span>
+      <span class="pill pill-live">⚡ v2.0.0 — available now</span>
     </div>
-    <h1>Your AI Technician.<br><span class="glow-text">On Call 24/7.</span></h1>
-    <p class="hero-sub">ComFlow turns every missed call into a structured work item — and is becoming the AI co-worker that resolves them. Bring your own LLM, STT, and TTS. Benchmark everything. Own your stack.</p>
+    <h1>Voicemail,<br><span class="glow-text">regulated.</span></h1>
+    <p class="hero-sub">ComFlow answers your calls over SIP, records the voicemail, transcribes and structures it, and gives your team a golden review inbox — then syncs the ones that matter into AnchorDesk. Not a receptionist. A voicemail regulator. Self-hosted, bring your own LLM / STT / TTS.</p>
     <div class="hero-actions">
-      <a href="https://github.com/josephspillers/ComFlow" target="_blank" rel="noopener" class="btn btn-primary">
+      <a href="#access" class="btn btn-primary">Get Access →</a>
+      <a href="https://github.com/spilloid/ComFlow" target="_blank" rel="noopener" class="btn btn-ghost">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
         View on GitHub
       </a>
-      <a href="#how-it-works" class="btn btn-ghost">See How It Works ↓</a>
     </div>
   </div>
 
-  <!-- Animated call card mockup -->
+  <!-- Animated voicemail card mockup -->
   <div class="hero-mockup">
     <div class="mockup-card">
       <div class="mockup-header">
-        <div class="mockup-avatar">📞</div>
+        <div class="mockup-avatar">📨</div>
         <div>
           <div class="mockup-caller-name">Sarah Mitchell</div>
           <div class="mockup-company">Apex Manufacturing · +1 (555) 204-7823</div>
@@ -951,15 +952,15 @@
       </div>
       <div class="mockup-ai-label">
         <div class="ai-dot"></div>
-        AI Summary
+        Voicemail · 0:42 · transcribed &amp; extracted
       </div>
       <div class="mockup-summary">
-        Printer on 3rd floor offline since 9am, blocking production reports. Needs immediate triage — escalate to hardware queue.
+        “Hi, our portal's been down since 9am and it's blocking invoicing — please call me back as soon as you can.” Callback: +1 (555) 204-7823.
       </div>
-      <div style="font-size:0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 6px;">Extracted by claude-sonnet-4-6 · 2s · 98ms</div>
+      <div style="font-size:0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 6px;">STT + LLM · your engines · structured automatically</div>
       <div class="mockup-action-row">
         <div class="mockup-btn">Add Note</div>
-        <div class="mockup-btn accent">Assign Queue →</div>
+        <div class="mockup-btn accent">Send to AnchorDesk →</div>
       </div>
     </div>
   </div>
@@ -969,26 +970,26 @@
 <div class="ticker-wrap">
   <div class="ticker-track" aria-hidden="true">
     <!-- duplicated for seamless loop -->
-    <span class="ticker-item"><span class="ticker-dot"></span>MCP Calendar Integration</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>SOP Knowledge Base</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>Auto-Triage Routing</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>Helpdesk Workflow Automation</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>Voice-to-Ticket</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>AI Escalation Logic</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>Real-Time Transcription</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>Autonomous Resolution</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>SIP Voicemail Capture</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Transcribe &amp; Extract</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Golden Review Inbox</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>AnchorDesk Ticket Sync</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Scheduled Outbound Calls</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Bring-Your-Own Audio</span>
     <span class="ticker-item"><span class="ticker-dot"></span>Pluggable LLM · STT · TTS</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>Engine Benchmarking &amp; Metricing</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>MCP Calendar Integration</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>SOP Knowledge Base</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>Auto-Triage Routing</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>Helpdesk Workflow Automation</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>Voice-to-Ticket</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>AI Escalation Logic</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>Real-Time Transcription</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>Autonomous Resolution</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Self-Hosted &amp; Open Source</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>baresip SIP Edge</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Local Accounts + Admin Config</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>SIP Voicemail Capture</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Transcribe &amp; Extract</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Golden Review Inbox</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>AnchorDesk Ticket Sync</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Scheduled Outbound Calls</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Bring-Your-Own Audio</span>
     <span class="ticker-item"><span class="ticker-dot"></span>Pluggable LLM · STT · TTS</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>Engine Benchmarking &amp; Metricing</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Self-Hosted &amp; Open Source</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>baresip SIP Edge</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Local Accounts + Admin Config</span>
   </div>
 </div>
 
@@ -996,55 +997,58 @@
 <section class="section" id="features">
   <div class="container">
     <div class="section-label">Capabilities</div>
-    <h2 class="section-title">Built for how helpdesks <span class="glow-text">actually work</span></h2>
-    <p class="section-sub">Every feature is designed around the real rhythm of a support team — fast triage, clear context, and zero dropped balls.</p>
+    <h2 class="section-title">A golden experience for <span class="glow-text">receiving voicemail</span></h2>
+    <p class="section-sub">ComFlow does one job extremely well: receive, process, present, and hand off voicemail. No scope creep, no pretending to be a receptionist.</p>
 
     <div class="bento">
-      <!-- AI Triage — 2 wide -->
+      <!-- AI Triage & Extraction — 2 wide -->
       <div class="bento-card card-triage">
         <span class="bento-icon">🧠</span>
         <div class="bento-title">
-          AI-Powered Triage
+          Transcribe &amp; Extract
           <span class="pill pill-live" style="font-size:0.65rem; padding: 3px 9px;">Live</span>
         </div>
-        <div class="bento-desc">Swap in any LLM — Claude, GPT-4o, Gemini, a local Ollama model, whatever — and it extracts caller name, company, callback number, intent, urgency, and a plain-English summary. No forms. No lock-in. Structured work items, automatically.</div>
+        <div class="bento-desc">Your STT engine transcribes the voicemail; your LLM pulls out caller name, company, callback number, intent, urgency, and a plain-English summary. Triage the whole inbox without replaying a single recording.</div>
       </div>
 
-      <!-- Notes -->
+      <!-- SIP Capture -->
       <div class="bento-card card-notes">
-        <span class="bento-icon">📝</span>
-        <div class="bento-title">Internal Notes</div>
-        <div class="bento-desc">Add team context to any call. Notes stay attached to the record so the next tech has full history before picking up the phone.</div>
+        <span class="bento-icon">📞</span>
+        <div class="bento-title">
+          Real SIP Capture
+          <span class="pill pill-live" style="font-size:0.65rem; padding: 3px 9px;">Live</span>
+        </div>
+        <div class="bento-desc">A baresip SIP edge (BSD-3) answers, plays your greeting, and records — ComFlow ingests it. No SIP/RTP stack to babysit.</div>
       </div>
 
-      <!-- Calendar Integration -->
+      <!-- AnchorDesk Sync -->
       <div class="bento-card card-calendar">
-        <span class="bento-icon">📅</span>
+        <span class="bento-icon">🎫</span>
         <div class="bento-title">
-          MCP Calendar Integration
-          <span class="pill pill-soon" style="font-size:0.65rem; padding: 3px 9px;">Soon</span>
+          AnchorDesk Sync
+          <span class="pill pill-live" style="font-size:0.65rem; padding: 3px 9px;">Live</span>
         </div>
-        <div class="bento-desc">ComFlow will connect to your calendar via MCP — scheduling callbacks, booking onsite visits, and sending confirmations without a human touching a calendar app.</div>
+        <div class="bento-desc">Bless a voicemail and it becomes an AnchorDesk ticket — transcript as the body, urgency as priority, recording attached. One-way, idempotent, gated on review.</div>
       </div>
 
-      <!-- SOPs -->
+      <!-- Scheduled Outbound -->
       <div class="bento-card card-sops">
-        <span class="bento-icon">📋</span>
+        <span class="bento-icon">⏰</span>
         <div class="bento-title">
-          SOP Knowledge Base
-          <span class="pill pill-soon" style="font-size:0.65rem; padding: 3px 9px;">Soon</span>
+          Scheduled Outbound
+          <span class="pill pill-live" style="font-size:0.65rem; padding: 3px 9px;">Live</span>
         </div>
-        <div class="bento-desc">Link your standard operating procedures. The AI will match incoming issues to known workflows and pre-populate resolution steps for the technician.</div>
+        <div class="bento-desc">Schedule a call, play a pre-generated message, ask one question, best-effort capture the answer. Tight scope — no conversation, no robocaller.</div>
       </div>
 
-      <!-- Routing -->
+      <!-- Bring-Your-Own Audio -->
       <div class="bento-card card-routing">
-        <span class="bento-icon">🔀</span>
+        <span class="bento-icon">🎙️</span>
         <div class="bento-title">
-          Smart Queue Routing
-          <span class="pill pill-soon" style="font-size:0.65rem; padding: 3px 9px;">Soon</span>
+          Bring-Your-Own Audio
+          <span class="pill pill-live" style="font-size:0.65rem; padding: 3px 9px;">Live</span>
         </div>
-        <div class="bento-desc">Intent + urgency + workload = the right tech, right now. Automated assignment rules keep the inbox from becoming a pile.</div>
+        <div class="bento-desc">Upload your own greeting and outbound prompts — or let TTS generate them. Your voice, your words.</div>
       </div>
 
       <!-- Engine Interoperability — 2 wide -->
@@ -1054,44 +1058,44 @@
           Engine Interoperability
           <span class="pill pill-live" style="font-size:0.65rem; padding: 3px 9px;">Core Design</span>
         </div>
-        <div class="bento-desc">ComFlow is built around provider interfaces, not hard dependencies. Swap LLM, STT, and TTS engines at config time. Run them head-to-head. Your infra, your vendors, your call.</div>
+        <div class="bento-desc">ComFlow is built around provider interfaces, not hard dependencies. Swap LLM, STT, and TTS engines at config time, persisted per install. Your infra, your vendors, your call — or run fully offline with the built-in fakes.</div>
         <div class="provider-grid">
-          <div class="provider-pill active">LLM · Claude</div>
-          <div class="provider-pill violet">LLM · GPT-4o</div>
-          <div class="provider-pill violet">LLM · Gemini</div>
-          <div class="provider-pill violet">LLM · Local</div>
-          <div class="provider-pill teal">STT · Whisper</div>
-          <div class="provider-pill teal">STT · Deepgram</div>
+          <div class="provider-pill active">LLM · Anthropic</div>
+          <div class="provider-pill violet">LLM · OpenAI</div>
+          <div class="provider-pill violet">LLM · Fake</div>
+          <div class="provider-pill teal">STT · OpenAI</div>
+          <div class="provider-pill teal">STT · ElevenLabs</div>
+          <div class="provider-pill teal">STT · Fake</div>
+          <div class="provider-pill" style="color:#a3e635;background:rgba(163,230,53,0.08);border-color:rgba(163,230,53,0.25);">TTS · OpenAI</div>
           <div class="provider-pill" style="color:#a3e635;background:rgba(163,230,53,0.08);border-color:rgba(163,230,53,0.25);">TTS · ElevenLabs</div>
-          <div class="provider-pill" style="color:#a3e635;background:rgba(163,230,53,0.08);border-color:rgba(163,230,53,0.25);">TTS · Kokoro</div>
         </div>
       </div>
 
-      <!-- Metricing -->
+      <!-- Local Accounts + Admin -->
       <div class="bento-card card-metrics">
-        <span class="bento-icon">📊</span>
+        <span class="bento-icon">🔐</span>
         <div class="bento-title">
-          Provider Metricing
-          <span class="pill pill-soon" style="font-size:0.65rem; padding: 3px 9px;">Soon</span>
+          Accounts &amp; Admin
+          <span class="pill pill-live" style="font-size:0.65rem; padding: 3px 9px;">Live</span>
         </div>
-        <div class="bento-desc">Every extraction run is timed and scored. Compare engines on latency, accuracy, and cost — per call, per queue, over time.</div>
+        <div class="bento-desc">First-class local accounts behind a pluggable auth layer, plus an admin console to configure the mailbox.</div>
         <div style="margin-top:14px;">
-          <div class="metric-row"><span class="metric-label">claude-sonnet-4-6</span><span class="metric-val">98ms</span></div>
-          <div class="metric-row"><span class="metric-label">gpt-4o-mini</span><span class="metric-val">142ms</span></div>
-          <div class="metric-row"><span class="metric-label">gemini-flash</span><span class="metric-val">211ms</span></div>
-          <div class="metric-row"><span class="metric-label">llama3-local</span><span class="metric-val">380ms</span></div>
+          <div class="metric-row"><span class="metric-label">Local login</span><span class="metric-val">Live</span></div>
+          <div class="metric-row"><span class="metric-label">Mailbox + DID</span><span class="metric-val">Live</span></div>
+          <div class="metric-row"><span class="metric-label">Greeting upload</span><span class="metric-val">Live</span></div>
+          <div class="metric-row"><span class="metric-label">SSO (OIDC/SAML)</span><span class="metric-val" style="color:#a78bfa;">Roadmap</span></div>
         </div>
       </div>
 
-      <!-- Voicemail NOW -->
+      <!-- Available NOW -->
       <div class="bento-card card-now">
         <div>
-          <span class="pill pill-live" style="margin-bottom: 14px; display: inline-flex;">⚡ Available Today</span>
-          <div class="now-headline">Start with voicemail.<br><span class="glow-text">Grow into AI.</span></div>
+          <span class="pill pill-live" style="margin-bottom: 14px; display: inline-flex;">⚡ Shipping today · v2.0.0</span>
+          <div class="now-headline">Receive. Process.<br><span class="glow-text">Present. Sync.</span></div>
         </div>
-        <div class="now-desc">The foundation is live: capture inbound calls, transcribe with your chosen STT engine, extract structured metadata with your chosen LLM, and manage everything from a clean review UI. The AI secretary — engine-agnostic by design — is built on top of this.</div>
+        <div class="now-desc">The whole loop is live and self-hosted: SIP capture → transcribe → extract → a golden review inbox → AnchorDesk. One container image, pluggable engines, your data on your hardware.</div>
         <div>
-          <a href="https://github.com/josephspillers/ComFlow" target="_blank" rel="noopener" class="btn btn-primary" style="white-space:nowrap;">Get Started →</a>
+          <a href="#access" class="btn btn-primary" style="white-space:nowrap;">Get Access →</a>
         </div>
       </div>
     </div>
@@ -1102,26 +1106,26 @@
 <section class="section" id="how-it-works" style="padding-top: 0;">
   <div class="container">
     <div class="section-label">Process</div>
-    <h2 class="section-title">Three steps. Zero dropped calls.</h2>
-    <p class="section-sub">ComFlow sits between your phone system and your team, making sure every inbound call becomes an actionable work item.</p>
+    <h2 class="section-title">Receive. Process. Present.</h2>
+    <p class="section-sub">ComFlow sits between your SIP source and your team, turning every voicemail into clean, reviewable, syncable work.</p>
 
     <div class="steps-grid">
       <div class="step">
         <div class="step-number">1</div>
-        <div class="step-title">Call comes in</div>
-        <div class="step-desc">Your telephony system fires a webhook. ComFlow captures the call record, stores the recording reference, and queues it for processing. Nothing is missed.</div>
+        <div class="step-title">Receive over SIP</div>
+        <div class="step-desc">A baresip SIP edge registers to your PBX or provider, answers the call, plays your greeting, and records the voicemail to a shared volume. ComFlow drives it over a control channel — no SIP/RTP code of its own.</div>
       </div>
       <div class="step-connector">→</div>
       <div class="step">
         <div class="step-number">2</div>
-        <div class="step-title">AI extracts context</div>
-        <div class="step-desc">The recording is transcribed by your configured STT engine. Your chosen LLM then pulls out caller name, company, callback number, intent category, urgency level, and a plain summary — all measured and logged.</div>
+        <div class="step-title">Transcribe &amp; extract</div>
+        <div class="step-desc">Your STT engine transcribes the recording. Your LLM then extracts caller name, company, callback number, intent, urgency, and a plain-English summary — engine-agnostic and persisted per install.</div>
       </div>
       <div class="step-connector">→</div>
       <div class="step">
         <div class="step-number">3</div>
-        <div class="step-title">Team reviews &amp; resolves</div>
-        <div class="step-desc">The call lands in the inbox with full context. Technicians review, confirm or correct the AI output, add notes, assign to a queue, and mark resolved — all from one screen.</div>
+        <div class="step-title">Present &amp; sync</div>
+        <div class="step-desc">The voicemail lands in a golden inbox with full context. Review, correct, add notes — and when you bless it, ComFlow files it into AnchorDesk as a ticket with the recording attached.</div>
       </div>
     </div>
   </div>
@@ -1134,87 +1138,79 @@
       <div class="roadmap-label-block">
         <div class="section-label">Roadmap</div>
         <div class="roadmap-big"><span class="glow-text">Where we're</span><br>going.</div>
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 16px; line-height: 1.7;">ComFlow starts as a smarter voicemail inbox and grows into a fully autonomous helpdesk co-worker. Each layer builds on the last.</p>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 16px; line-height: 1.7;">M1 ships the whole voicemail loop today. M2 adds SSO; M3 opens it up to many mailboxes and teams. Each layer builds on the last — and stays in its lane.</p>
       </div>
 
       <ul class="roadmap-list">
         <li class="roadmap-item">
           <span class="roadmap-icon">📞</span>
           <div class="roadmap-text">
-            Voicemail capture + transcription
-            <small>Inbound webhooks, recording storage, STT pipeline</small>
+            SIP voicemail capture
+            <small>baresip SIP edge — answer, greet, record; ComFlow ingests</small>
           </div>
           <span class="status-badge status-done">Done</span>
         </li>
         <li class="roadmap-item">
           <span class="roadmap-icon">🧠</span>
           <div class="roadmap-text">
-            AI metadata extraction
-            <small>Pluggable LLM extraction — Claude, GPT-4o, Gemini, local models</small>
+            Transcribe + LLM extraction
+            <small>Pluggable STT &amp; LLM — OpenAI, Anthropic, ElevenLabs, fakes</small>
           </div>
           <span class="status-badge status-done">Done</span>
         </li>
         <li class="roadmap-item">
           <span class="roadmap-icon">🖥️</span>
           <div class="roadmap-text">
-            Human-review inbox UI
-            <small>Review, edit, assign, and resolve calls from a web app</small>
+            Golden review inbox
+            <small>Triage, search, transcript, playback, notes, "new" emphasis</small>
           </div>
           <span class="status-badge status-done">Done</span>
         </li>
         <li class="roadmap-item">
-          <span class="roadmap-icon">📡</span>
+          <span class="roadmap-icon">🎫</span>
           <div class="roadmap-text">
-            Real telephony adapter
-            <small>Twilio / Telnyx integration replacing the fake provider</small>
+            AnchorDesk ticket sync
+            <small>Reviewed voicemails become tickets — transcript, priority, recording</small>
           </div>
-          <span class="status-badge status-building">Building</span>
+          <span class="status-badge status-done">Done</span>
         </li>
         <li class="roadmap-item">
-          <span class="roadmap-icon">📊</span>
+          <span class="roadmap-icon">⏰</span>
           <div class="roadmap-text">
-            Engine benchmarking dashboard
-            <small>Per-call latency, accuracy, and cost metrics across all provider slots</small>
+            Scheduled outbound
+            <small>Play a message, ask one question, best-effort capture the answer</small>
           </div>
-          <span class="status-badge status-building">Building</span>
+          <span class="status-badge status-done">Done</span>
         </li>
         <li class="roadmap-item">
-          <span class="roadmap-icon">🔌</span>
+          <span class="roadmap-icon">🎙️</span>
           <div class="roadmap-text">
-            Real STT / TTS adapters
-            <small>Whisper, Deepgram, ElevenLabs, Kokoro — swappable at config time</small>
+            Bring-your-own audio
+            <small>Upload greetings &amp; outbound prompts, or generate them with TTS</small>
           </div>
-          <span class="status-badge status-planned">Planned</span>
+          <span class="status-badge status-done">Done</span>
         </li>
         <li class="roadmap-item">
-          <span class="roadmap-icon">📅</span>
+          <span class="roadmap-icon">🔐</span>
           <div class="roadmap-text">
-            MCP calendar integration
-            <small>AI schedules callbacks and visits via Model Context Protocol</small>
+            Local accounts + admin config
+            <small>First-class local auth, single mailbox/DID, greeting management</small>
           </div>
-          <span class="status-badge status-planned">Planned</span>
+          <span class="status-badge status-done">Done</span>
         </li>
         <li class="roadmap-item">
-          <span class="roadmap-icon">📋</span>
+          <span class="roadmap-icon">🪪</span>
           <div class="roadmap-text">
-            SOP knowledge base
-            <small>Match issues to known workflows, pre-populate resolution steps</small>
-          </div>
-          <span class="status-badge status-planned">Planned</span>
-        </li>
-        <li class="roadmap-item">
-          <span class="roadmap-icon">🔀</span>
-          <div class="roadmap-text">
-            Automated queue routing
-            <small>Intent + urgency + availability → right tech, right now</small>
+            SSO — OIDC / SAML 2.0 <small>M2</small>
+            <small>Single sign-on behind the same pluggable auth interface</small>
           </div>
           <span class="status-badge status-planned">Planned</span>
         </li>
         <li class="roadmap-item">
-          <span class="roadmap-icon">🤖</span>
+          <span class="roadmap-icon">📬</span>
           <div class="roadmap-text">
-            Autonomous helpdesk resolution
-            <small>AI executes known SOPs end-to-end for common issue types</small>
+            Multi-mailbox &amp; teams <small>M3</small>
+            <small>Multiple DIDs / lines as mailboxes, mapped to accounts and teams</small>
           </div>
           <span class="status-badge status-planned">Planned</span>
         </li>
@@ -1223,17 +1219,22 @@
   </div>
 </section>
 
-<!-- ── Voicemail Only Callout ───────────────────────────────── -->
-<section class="callout-section">
+<!-- ── Access ───────────────────────────────────────────────── -->
+<section class="callout-section" id="access">
   <div class="container">
     <div class="callout-card">
-      <div class="callout-phone">📬</div>
+      <div class="callout-phone">📨</div>
       <div class="callout-text">
-        <h3>Voicemail only — <span class="glow-text">for now.</span></h3>
-        <p>Right now, ComFlow is a really smart voicemail system. It captures your calls, transcribes them, and extracts what matters — so nothing falls through the cracks. The AI secretary that books your appointments, walks SOPs, and resolves tickets? It's coming. This is its foundation. Get in early.</p>
+        <h3>Want in? <span class="glow-text">Just ask.</span></h3>
+        <p>ComFlow is hosted at <strong>com.spillerstech.us</strong>. Accounts are created by hand — the way it should be. Email <a href="mailto:support@spillerstech.us?subject=ComFlow%20access&amp;body=Hi%2C%20I%27d%20like%20a%20ComFlow%20account.%0A%0AName%3A%0ACallback%20number%3A%0AWhat%20I%27m%20using%20it%20for%3A" style="color: var(--accent-2); text-decoration: underline;">support@spillerstech.us</a> with a <strong>callback number</strong> and a line about what you're doing, and we'll set you up a local account and get you going — usually same day.</p>
       </div>
-      <a href="https://github.com/josephspillers/ComFlow" target="_blank" rel="noopener" class="btn btn-primary" style="white-space:nowrap; align-self: center;">Star on GitHub →</a>
+      <a href="mailto:support@spillerstech.us?subject=ComFlow%20access&amp;body=Hi%2C%20I%27d%20like%20a%20ComFlow%20account.%0A%0AName%3A%0ACallback%20number%3A%0AWhat%20I%27m%20using%20it%20for%3A" class="btn btn-primary" style="white-space:nowrap; align-self: center;">Email for an account →</a>
     </div>
+    <p style="text-align:center; color: var(--text-muted); font-size: 0.85rem; margin-top: 24px; line-height: 1.7;">
+      Rather run your own? It's open source and ships as a single container:
+      <code style="background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px; padding: 2px 8px; font-size: 0.82rem;">docker pull ghcr.io/spilloid/comflow:latest</code>
+      · <a href="https://github.com/spilloid/ComFlow" target="_blank" rel="noopener" style="color: var(--accent-2);">self-host guide on GitHub ↗</a>
+    </p>
   </div>
 </section>
 
@@ -1242,13 +1243,15 @@
   <div class="container footer-inner">
     <div class="footer-logo">Com<span>Flow</span></div>
     <div class="footer-links">
-      <a href="https://github.com/josephspillers/ComFlow" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/spilloid/ComFlow" target="_blank" rel="noopener">GitHub</a>
       <a href="#features">Features</a>
       <a href="#roadmap">Roadmap</a>
+      <a href="#access">Get Access</a>
+      <a href="mailto:support@spillerstech.us">support@spillerstech.us</a>
     </div>
     <div class="claude-badge">
       <div class="claude-dot"></div>
-      Engine-agnostic AI infrastructure
+      The voicemail regulator · self-hosted
     </div>
   </div>
 </footer>
