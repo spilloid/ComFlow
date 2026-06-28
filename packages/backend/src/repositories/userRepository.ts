@@ -113,6 +113,25 @@ export const userRepository = {
     return this.getById(id)
   },
 
+  updateProfile(
+    id: string,
+    patch: { displayName: string | null; email?: string }
+  ): UserRecord | null {
+    const existing = this.getById(id)
+    if (!existing) return null
+
+    db.prepare(`
+      UPDATE users SET display_name = ?, email = ?, updated_at = ? WHERE id = ?
+    `).run(
+      patch.displayName,
+      patch.email ?? existing.email,
+      new Date().toISOString(),
+      id
+    )
+
+    return this.getById(id)
+  },
+
   setPassword(id: string, passwordHash: string): void {
     db.prepare(
       'UPDATE users SET password_hash = ?, updated_at = ? WHERE id = ?'

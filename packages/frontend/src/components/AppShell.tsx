@@ -38,6 +38,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               </Button>
             )}
             {authRequired && user && (
+              <Button color="inherit" component={NavLink} to="/profile">
+                Profile
+              </Button>
+            )}
+            {authRequired && user && (
               <Button color="inherit" onClick={logout}>
                 Sign out
               </Button>

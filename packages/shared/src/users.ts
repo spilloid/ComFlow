@@ -21,6 +21,16 @@ export const ResetPasswordRequestSchema = z.object({
   password: z.string().min(8).max(200),
 })
 
+export const UpdateProfileSchema = z.object({
+  displayName: z.string().trim().min(1).max(120).nullable(),
+  email: z.string().trim().email(),
+})
+
+export const ChangePasswordSchema = z.object({
+  currentPassword: z.string().min(1),
+  newPassword: z.string().min(8).max(200),
+})
+
 export const UserListResponseSchema = z.object({
   items: z.array(UserSchema),
 })
@@ -32,5 +42,7 @@ export const UserResponseSchema = z.object({
 export type CreateUserRequest = z.infer<typeof CreateUserRequestSchema>
 export type UpdateUserRequest = z.infer<typeof UpdateUserRequestSchema>
 export type ResetPasswordRequest = z.infer<typeof ResetPasswordRequestSchema>
+export type UpdateProfile = z.infer<typeof UpdateProfileSchema>
+export type ChangePassword = z.infer<typeof ChangePasswordSchema>
 export type UserListResponse = z.infer<typeof UserListResponseSchema>
 export type UserResponse = z.infer<typeof UserResponseSchema>

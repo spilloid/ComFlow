@@ -44,6 +44,11 @@ SIP source ──SIP/RTP──▶ baresip (SIP edge) ──ctrl_tcp──▶ Com
 - **Accounts, SSO & teams**: first-class local auth (open by default) plus
   OIDC/SAML SSO; admins manage users, multiple mailboxes/DIDs, and groups that
   grant per-mailbox visibility — all under Settings and Access.
+- **Self-service profile + API keys**: signed-in users can edit their profile,
+  change local passwords, and create/revoke `cf_` API keys for automation.
+- **Hosted MCP endpoint**: `/api/mcp` exposes ComFlow tools and recording
+  resources over MCP Streamable HTTP, authenticated by the same `cf_` keys and
+  scoped to the key owner's role and mailbox grants.
 
 ## Repo layout
 
@@ -121,9 +126,26 @@ Open: `GET /api/health`, `POST /api/auth/login`, `GET /api/auth/me`,
 Guarded (pass-through in open mode): `/api/calls*`, `/api/scheduled-calls*`,
 `/api/prompts*`, `/api/mailboxes*`, `/api/settings/*`.
 
+Self-service (requires auth, no admin role): `GET/PATCH /api/me`,
+`POST /api/me/password`, `GET/POST/DELETE /api/me/keys*`. API key values are
+shown once at creation; only metadata is stored and listed afterward.
+
 Admin-only: `/api/groups*` (RBAC group/membership/mailbox-grant management),
 `/api/users*` (local user create/role/password/delete), `/api/mailboxes` writes,
 `/api/settings/*`.
+
+MCP: `POST /api/mcp` (Streamable HTTP) requires `Authorization: Bearer cf_...`.
+Session tokens are intentionally not accepted for MCP. Tools mirror the UI:
+`list_calls`, `get_call`, `update_call`, `add_note`,
+`list_scheduled_call`, `create_scheduled_call`, `cancel_scheduled_call`,
+`list_prompt`, `upload_prompt`, `delete_prompt`, `list_mailbox`,
+`create_mailbox`, `update_mailbox`, `delete_mailbox`, `get_settings`,
+`update_settings`, plus admin user/group tools. Recording files are exposed as
+`comflow://recordings/{callId}` resources for calls the key owner can access.
+
+`upload_prompt` accepts base64 audio for dependency-free clients, matching the
+REST prompt upload shape. Prefer REST/browser uploads or local file references
+when possible; base64 inflates payloads and is discouraged for large audio.
 
 Inbound calls route to a mailbox by dialed DID (`toNumber` → `mailboxes.number`),
 then receiving SIP account (`accountLabel` → `mailboxes.sipAccountRef`), else the
@@ -156,6 +178,9 @@ All env vars are documented in [.env.example](.env.example). Highlights:
 - **RBAC (M3)**: groups grant **mailbox visibility**. Admins see/manage every
   mailbox; members see only the calls/mailboxes their groups grant. Manage groups,
   members, mailbox grants, and SSO group mappings on the **Access** admin page.
+- **MCP/API keys**: create `cf_` keys on the Profile page. MCP requests to
+  `/api/mcp` act as the key owner; member keys cannot call admin settings,
+  group, user, or mailbox-write tools.
 
 ## Roadmap
 
@@ -169,6 +194,8 @@ All env vars are documented in [.env.example](.env.example). Highlights:
   route to a mailbox by dialed DID / SIP account. Groups grant per-mailbox
   visibility — members see only their granted mailboxes; admins manage users,
   groups, mailboxes, and IdP-group mappings on the Access/Settings pages.
+- **2.3 — Self-service + MCP** ✅: profile/password management, user-owned API
+  keys, and a hosted MCP endpoint with ComFlow tools and recording resources.
 
 ## Short version
 

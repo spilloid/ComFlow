@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.52.0",
+    "@comflow/mcp": "file:../mcp",
     "@comflow/shared": "file:../shared",
     "@node-saml/node-saml": "^5.1.0",
     "better-sqlite3": "^11.10.0",

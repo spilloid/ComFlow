@@ -7,6 +7,7 @@ import { AccessPage } from '../pages/AccessPage'
 import { CallDetailPage } from '../pages/CallDetailPage'
 import { CallInboxPage } from '../pages/CallInboxPage'
 import { LoginPage } from '../pages/LoginPage'
+import { ProfilePage } from '../pages/ProfilePage'
 import { ScheduledCallsPage } from '../pages/ScheduledCallsPage'
 import { SettingsPage } from '../pages/SettingsPage'
 
@@ -34,6 +35,7 @@ function AppGate() {
         <Route path="/" element={<Navigate to="/calls" replace />} />
         <Route path="/calls" element={<CallInboxPage />} />
         <Route path="/calls/:id" element={<CallDetailPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="/scheduled-calls" element={<ScheduledCallsPage />} />
         {/* Connections was folded into the Settings → Mailboxes tab. */}
         <Route path="/connections" element={<Navigate to="/settings" replace />} />

@@ -922,7 +922,7 @@
 <section class="section hero container">
   <div class="hero-copy">
     <div class="hero-eyebrow">
-      <span class="pill pill-live">⚡ v2.0.0 — available now</span>
+      <span class="pill pill-live">⚡ v2.3.0 — available now</span>
     </div>
     <h1>Voicemail,<br><span class="glow-text">regulated.</span></h1>
     <p class="hero-sub">ComFlow answers your calls over SIP, records the voicemail, transcribes and structures it, and gives your team a golden review inbox — then syncs the ones that matter into AnchorDesk. Not a receptionist. A voicemail regulator. Self-hosted, bring your own LLM / STT / TTS.</p>
@@ -979,7 +979,7 @@
     <span class="ticker-item"><span class="ticker-dot"></span>Pluggable LLM · STT · TTS</span>
     <span class="ticker-item"><span class="ticker-dot"></span>Self-Hosted &amp; Open Source</span>
     <span class="ticker-item"><span class="ticker-dot"></span>baresip SIP Edge</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>Local Accounts + Admin Config</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Profiles + MCP API Keys</span>
     <span class="ticker-item"><span class="ticker-dot"></span>SIP Voicemail Capture</span>
     <span class="ticker-item"><span class="ticker-dot"></span>Transcribe &amp; Extract</span>
     <span class="ticker-item"><span class="ticker-dot"></span>Golden Review Inbox</span>
@@ -989,7 +989,7 @@
     <span class="ticker-item"><span class="ticker-dot"></span>Pluggable LLM · STT · TTS</span>
     <span class="ticker-item"><span class="ticker-dot"></span>Self-Hosted &amp; Open Source</span>
     <span class="ticker-item"><span class="ticker-dot"></span>baresip SIP Edge</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>Local Accounts + Admin Config</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Profiles + MCP API Keys</span>
   </div>
 </div>
 
@@ -1078,19 +1078,20 @@
           Accounts &amp; Admin
           <span class="pill pill-live" style="font-size:0.65rem; padding: 3px 9px;">Live</span>
         </div>
-        <div class="bento-desc">Local accounts <em>and</em> SSO (OIDC/SAML) behind one pluggable auth layer, plus role-based access: groups grant per-mailbox visibility to teams.</div>
+        <div class="bento-desc">Local accounts <em>and</em> SSO (OIDC/SAML) behind one pluggable auth layer, plus role-based access: groups grant per-mailbox visibility to teams. Users can manage profile details and issue scoped MCP API keys.</div>
         <div style="margin-top:14px;">
           <div class="metric-row"><span class="metric-label">Local login</span><span class="metric-val">Live</span></div>
           <div class="metric-row"><span class="metric-label">Mailbox + DID</span><span class="metric-val">Live</span></div>
           <div class="metric-row"><span class="metric-label">SSO (OIDC/SAML)</span><span class="metric-val">Live</span></div>
           <div class="metric-row"><span class="metric-label">Teams &amp; RBAC</span><span class="metric-val">Live</span></div>
+          <div class="metric-row"><span class="metric-label">MCP endpoint</span><span class="metric-val">Live</span></div>
         </div>
       </div>
 
       <!-- Available NOW -->
       <div class="bento-card card-now">
         <div>
-          <span class="pill pill-live" style="margin-bottom: 14px; display: inline-flex;">⚡ Shipping today · v2.0.0</span>
+          <span class="pill pill-live" style="margin-bottom: 14px; display: inline-flex;">⚡ Shipping today · v2.3.0</span>
           <div class="now-headline">Receive. Process.<br><span class="glow-text">Present. Sync.</span></div>
         </div>
         <div class="now-desc">The whole loop is live and self-hosted: SIP capture → transcribe → extract → a golden review inbox → AnchorDesk. One container image, pluggable engines, your data on your hardware.</div>
@@ -1211,6 +1212,14 @@
           <div class="roadmap-text">
             SMTP voicemail notifications
             <small>Postfix-friendly email alerts when new voicemails are processed</small>
+          </div>
+          <span class="status-badge status-done">Done</span>
+        </li>
+        <li class="roadmap-item">
+          <span class="roadmap-icon">🔑</span>
+          <div class="roadmap-text">
+            Profile + MCP API keys <small>2.3</small>
+            <small>Self-service profile management and Streamable HTTP MCP access scoped by RBAC</small>
           </div>
           <span class="status-badge status-done">Done</span>
         </li>

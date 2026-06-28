@@ -120,6 +120,17 @@ db.exec(`
     updated_at TEXT NOT NULL
   );
 
+  CREATE TABLE IF NOT EXISTS api_keys (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    name TEXT NOT NULL,
+    prefix TEXT NOT NULL,
+    key_hash TEXT NOT NULL UNIQUE,
+    created_at TEXT NOT NULL,
+    last_used_at TEXT,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  );
+
   CREATE TABLE IF NOT EXISTS mailboxes (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
@@ -180,6 +191,8 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_calls_assigned_queue ON calls(assigned_queue);
   CREATE INDEX IF NOT EXISTS idx_call_notes_call_id_created_at ON call_notes(call_id, created_at ASC);
   CREATE INDEX IF NOT EXISTS idx_scheduled_calls_status_due ON scheduled_calls(status, scheduled_at ASC);
+  CREATE INDEX IF NOT EXISTS idx_api_keys_user_id ON api_keys(user_id);
+  CREATE INDEX IF NOT EXISTS idx_api_keys_key_hash ON api_keys(key_hash);
 `)
 
 // Lightweight migrations for databases created before a column existed.

@@ -1,5 +1,9 @@
 import {
   AuthProvidersResponseSchema,
+  ApiKeyListResponseSchema,
+  ChangePassword,
+  CreateApiKeyResponseSchema,
+  CreateApiKeyRequest,
   CreateAudioPromptRequest,
   CreateAudioPromptResponseSchema,
   CreateCallNoteInput,
@@ -38,6 +42,7 @@ import {
   UpdateUserRequest,
   UpdateSipSettingsRequest,
   UpdateSipSettingsApiResponseSchema,
+  UpdateProfile,
   UserListResponseSchema,
   UserResponseSchema,
 } from '../../../shared/src/index.js'
@@ -292,6 +297,68 @@ export async function downloadRecording(url: string) {
 
 export function getMe() {
   return request('/api/auth/me', { method: 'GET' }, MeResponseSchema)
+}
+
+export function getProfile() {
+  return request('/api/me', { method: 'GET' }, UserResponseSchema)
+}
+
+export function updateProfile(payload: UpdateProfile) {
+  return request(
+    '/api/me',
+    { method: 'PATCH', body: JSON.stringify(payload) },
+    UserResponseSchema
+  )
+}
+
+export async function changePassword(payload: ChangePassword) {
+  const token = getToken()
+  const response = await fetch('/api/me/password', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: JSON.stringify(payload),
+  })
+  if (!response.ok && response.status !== 204) {
+    let message = 'Failed to change password.'
+    try {
+      message = ((await response.json()) as { error?: string }).error ?? message
+    } catch {
+      // keep the generic message
+    }
+    throw new Error(message)
+  }
+}
+
+export function getApiKeys() {
+  return request('/api/me/keys', { method: 'GET' }, ApiKeyListResponseSchema)
+}
+
+export function createApiKey(payload: CreateApiKeyRequest) {
+  return request(
+    '/api/me/keys',
+    { method: 'POST', body: JSON.stringify(payload) },
+    CreateApiKeyResponseSchema
+  )
+}
+
+export async function revokeApiKey(id: string) {
+  const token = getToken()
+  const response = await fetch(`/api/me/keys/${id}`, {
+    method: 'DELETE',
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  })
+  if (!response.ok && response.status !== 204) {
+    let message = 'Failed to revoke API key.'
+    try {
+      message = ((await response.json()) as { error?: string }).error ?? message
+    } catch {
+      // keep the generic message
+    }
+    throw new Error(message)
+  }
 }
 
 export function getAuthProviders() {

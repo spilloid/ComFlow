@@ -18,6 +18,7 @@ interface AuthState {
   loading: boolean
   login: (email: string, password: string) => Promise<void>
   logout: () => void
+  refresh: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthState | null>(null)
@@ -95,8 +96,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       loading,
       login,
       logout,
+      refresh,
     }),
-    [user, authRequired, localEnabled, providers, ssoError, loading, login, logout]
+    [
+      user,
+      authRequired,
+      localEnabled,
+      providers,
+      ssoError,
+      loading,
+      login,
+      logout,
+      refresh,
+    ]
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
