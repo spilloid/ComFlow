@@ -156,6 +156,22 @@ db.exec(`
     updated_at TEXT NOT NULL
   );
 
+  -- DIDs ordered from a SIP trunk provider (VoIP.ms), routed to our shared
+  -- trunk and bound to a tenant's mailbox. The mailbox number column holds the
+  -- DID; this table tracks provisioning lifecycle + pricing for billing/release.
+  CREATE TABLE IF NOT EXISTS provisioned_dids (
+    id TEXT PRIMARY KEY,
+    tenant_id TEXT NOT NULL,
+    number TEXT NOT NULL UNIQUE,
+    provider TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'active',
+    monthly_cents INTEGER NOT NULL DEFAULT 0,
+    per_minute_cents INTEGER NOT NULL DEFAULT 0,
+    mailbox_id TEXT,
+    created_at TEXT NOT NULL,
+    released_at TEXT
+  );
+
   -- RBAC (M3): groups grant mailbox visibility. Admins see everything; members
   -- see only the mailboxes their groups grant.
   CREATE TABLE IF NOT EXISTS groups (

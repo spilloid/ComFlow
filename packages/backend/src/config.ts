@@ -95,6 +95,22 @@ export const config = {
       process.env.COMFLOW_SCHEDULER_INTERVAL_SEC ?? 15
     ),
   },
+  // SIP trunk provider for on-the-fly DID provisioning. When VoIP.ms creds are
+  // present the real adapter is used; otherwise a `fake` in-memory pool backs
+  // dev/tests. One shared account serves all tenants.
+  sipTrunk: {
+    provider: readOptionalEnv('COMFLOW_SIP_TRUNK_PROVIDER'),
+    voipms: {
+      apiUsername: readOptionalEnv('VOIPMS_API_USERNAME'),
+      apiPassword: readOptionalEnv('VOIPMS_API_PASSWORD'),
+      subAccount: readOptionalEnv('VOIPMS_SUBACCOUNT') ?? '',
+      defaultState: readOptionalEnv('VOIPMS_DEFAULT_STATE') ?? 'NY',
+      defaultMonthlyCents: Number(process.env.VOIPMS_DEFAULT_MONTHLY_CENTS ?? 85),
+      defaultPerMinuteCents: Number(
+        process.env.VOIPMS_DEFAULT_PER_MINUTE_CENTS ?? 1
+      ),
+    },
+  },
   secrets: {
     openaiApiKey: readEnv('COMFLOW_OPENAI_API_KEY', 'OPENAI_API_KEY'),
     anthropicApiKey: readEnv('COMFLOW_ANTHROPIC_API_KEY', 'ANTHROPIC_API_KEY'),

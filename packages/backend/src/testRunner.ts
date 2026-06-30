@@ -669,6 +669,51 @@ async function main() {
     )
   })
 
+  await runTest('did provisioning binds a DID to a mailbox and reverses', async () => {
+    const { ensurePrimaryTenant } = await getModules()
+    const { DidProvisioningService } = await import(
+      './services/didProvisioningService.js'
+    )
+    const { FakeSipTrunkProvider } = await import('./providers/sip/fake.js')
+    const { mailboxRepository } = await import(
+      './repositories/mailboxRepository.js'
+    )
+    const { didRepository } = await import('./repositories/didRepository.js')
+
+    const tenantId = ensurePrimaryTenant({ name: 'Primary', slug: 'primary' })
+    const service = new DidProvisioningService(
+      new FakeSipTrunkProvider(['+15550102000'])
+    )
+
+    const did = await service.provision(tenantId, {
+      number: '+15550102000',
+      mailboxName: 'Forwarded line',
+    })
+    assert.equal(did.number, '+15550102000')
+    assert.equal(did.status, 'active')
+    assert.ok(did.mailboxId)
+
+    // A mailbox now routes that DID, scoped to the tenant.
+    const mailbox = mailboxRepository.getByNumber('+15550102000')
+    assert.ok(mailbox)
+    assert.equal(mailbox!.id, did.mailboxId)
+    assert.deepEqual(
+      service.listForTenant(tenantId).map(d => d.number),
+      ['+15550102000']
+    )
+
+    // Double-provisioning the same number is rejected.
+    await assert.rejects(
+      () => service.provision(tenantId, { number: '+15550102000' }),
+      /already provisioned/
+    )
+
+    // Releasing reverses routing and marks the DID released.
+    await service.release(tenantId, '+15550102000')
+    assert.equal(didRepository.getByNumber('+15550102000')!.status, 'released')
+    assert.equal(mailboxRepository.getByNumber('+15550102000'), null)
+  })
+
   await runTest('requireAdmin blocks non-admins', async () => {
     const { requireAdmin } = await import('./middleware/requireAdmin.js')
 

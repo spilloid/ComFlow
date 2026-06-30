@@ -6,6 +6,7 @@ import { User } from '../../shared/src/index.js'
 import { createComflowMcpRouter } from '../../mcp/src/index.js'
 import { createAuthRouter } from './routes/auth.js'
 import { createCallsRouter } from './routes/calls.js'
+import { createDidsRouter } from './routes/dids.js'
 import { createGroupsRouter } from './routes/groups.js'
 import { createHealthRouter } from './routes/health.js'
 import { createMailboxesRouter } from './routes/mailboxes.js'
@@ -28,6 +29,7 @@ import { AuthService } from './services/authService.js'
 import { BaresipManagementService } from './services/baresipManagementService.js'
 import { CallIngestionService } from './services/callIngestionService.js'
 import { CallReviewService } from './services/callReviewService.js'
+import { DidProvisioningService } from './services/didProvisioningService.js'
 import { EmailNotificationService } from './services/emailNotificationService.js'
 import { EngineService } from './services/engineService.js'
 import { MailboxService } from './services/mailboxService.js'
@@ -75,6 +77,7 @@ export function createApp() {
     telephonyGateway,
     audioPromptService
   )
+  const didProvisioningService = new DidProvisioningService()
 
   function assertWithinDataDir(filePath: string, directory: string) {
     const resolvedFile = path.resolve(filePath)
@@ -361,6 +364,11 @@ export function createApp() {
     createScheduledCallsRouter(scheduledCallService)
   )
   app.use('/api/mailboxes', requireAuth, createMailboxesRouter(mailboxService))
+  app.use(
+    '/api/dids',
+    requireAuth,
+    createDidsRouter(didProvisioningService)
+  )
   app.use('/api/groups', requireAuth, requireAdmin, createGroupsRouter())
   app.use('/api/users', requireAuth, requireAdmin, createUsersRouter())
 
